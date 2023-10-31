@@ -36,15 +36,26 @@ bool ModulePhysics::Start()
 	ground = world->CreateBody(&bd);
 
 	// 50 points circle
-	CreateCircle(SCREEN_WIDTH / 2, 300, 35, 1.0f, true);
+	CreateCircle(SCREEN_WIDTH / 2 - 20, 300, 35, 1.0f, true);
 
 	// 25 points circle
-	CreateCircle(440, 200, 25, 1.0f, true);
+	CreateCircle(420, 200, 25, 1.0f, true);
 	
 	// 100 points circle
-	CreateCircle(580, 210, 30, 1.0f, true);
+	CreateCircle(560, 210, 30, 1.0f, true);
 
 	//Scenary
+
+	//Contorno
+	int contorno[8] = {
+		0, 0,
+		500, 0,
+		500, 750,
+		0, 750,
+	};
+	CreateChain(255, 10, contorno, 8, 0.4f);
+
+	//Paredes
 	int rampDownLeft[10] = {
 		0, 0,
 		60, 0,
@@ -52,9 +63,74 @@ bool ModulePhysics::Start()
 		180, 155,
 		0, 155,
 	};
-	CreateChain(270, 550, rampDownLeft, 10);
+	CreateChain(255, 606, rampDownLeft, 10, 0.4f);
 
+	int rampDownRight[10] = {
+		180, 0,
+		120, 0,
+		0, 60,
+		0, 155,
+		180, 155,
+	};
+	CreateChain(525, 606, rampDownRight, 10, 0.4f);
 
+	int triangleLeft[14] = {
+		0, 0,
+		5, 20,
+		15, 40,
+		25, 60,
+		65, 100,
+		30, 120,
+		0, 150,
+	};
+	CreateChain(255, 300, triangleLeft, 14, 0.4f);
+
+	int techoCirculo[28] = {
+		0, 0,
+		0, 200,
+		15, 150,
+		50, 100,
+		110, 55,
+		160, 35,
+		220, 17,
+		280, 17,
+		340, 35,
+		390, 55,
+		450, 100,
+		485, 150,
+		500, 200,
+		500, 0,
+
+	};
+	CreateChain(255, 10, techoCirculo, 28, 0.4f);
+
+	int wallRight[44] = {
+		0, 0,
+		5, 10,
+		10, 25,
+		30, 45,
+		50, 85,
+		60, 135,
+		60, 150,
+		50, 190,
+		35, 230,
+		35, 235,
+		40, 245,
+		95, 290,
+		95, 485,
+		105, 485,
+		105, 130,
+		100, 110,
+		90, 80,
+		75, 50,
+		60, 20,
+		45, 0,
+		15, -20,
+		5, -20,
+
+	};
+	CreateChain(600, 120, wallRight, 44, 0.4f);
+	
 
 	return true;
 }
@@ -164,7 +240,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
+PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, float res)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -185,6 +261,7 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
+	fixture.restitution = res;
 
 	b->CreateFixture(&fixture);
 
