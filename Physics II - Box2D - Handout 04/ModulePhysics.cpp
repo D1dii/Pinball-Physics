@@ -45,17 +45,16 @@ bool ModulePhysics::Start()
 	CreateCircle(580, 210, 30, 1.0f, true);
 
 	//Scenary
-	int points[10] = {
-		44, 76,
-		44, 66,
-		3, 62,
-		1, 62,
-		1, 76,
+	int rampDownLeft[10] = {
+		0, 0,
+		60, 0,
+		180, 60,
+		180, 155,
+		0, 155,
 	};
+	CreateChain(270, 550, rampDownLeft, 10);
 
-	
-	
-	CreateChain(512, 384, points, 10);
+
 
 	return true;
 }
