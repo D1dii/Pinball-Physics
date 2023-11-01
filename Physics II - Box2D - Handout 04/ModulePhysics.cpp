@@ -36,13 +36,13 @@ bool ModulePhysics::Start()
 	ground = world->CreateBody(&bd);
 
 	// 50 points circle
-	CreateCircle(SCREEN_WIDTH / 2 - 20, 300, 35, 1.0f, true);
+	CreateCircle(SCREEN_WIDTH / 2 - 20, 300, 30, 1.0f, true);
 
 	// 25 points circle
-	CreateCircle(420, 200, 25, 1.0f, true);
+	CreateCircle(450, 200, 20, 1.0f, true);
 	
 	// 100 points circle
-	CreateCircle(560, 210, 30, 1.0f, true);
+	CreateCircle(550, 210, 25, 1.0f, true);
 
 	//Scenary
 
@@ -60,26 +60,26 @@ bool ModulePhysics::Start()
 		0, 0,
 		60, 0,
 		180, 60,
-		180, 155,
-		0, 155,
+		180, 125,
+		0, 125,
 	};
-	CreateChain(255, 606, rampDownLeft, 10, 0.4f);
+	CreateChain(255, 636, rampDownLeft, 10, 0.4f);
 
 	int rampDownRight[10] = {
 		180, 0,
 		120, 0,
 		0, 60,
-		0, 155,
-		180, 155,
+		0, 125,
+		180, 125,
 	};
-	CreateChain(525, 606, rampDownRight, 10, 0.4f);
+	CreateChain(525, 636, rampDownRight, 10, 0.4f);
 
 	int triangleLeft[14] = {
 		0, 0,
 		5, 20,
 		15, 40,
 		25, 60,
-		65, 100,
+		60, 110,
 		30, 120,
 		0, 150,
 	};
@@ -117,19 +117,145 @@ bool ModulePhysics::Start()
 		35, 235,
 		40, 245,
 		95, 290,
-		95, 485,
-		105, 485,
+		95, 506,
+		105, 506,
 		105, 130,
 		100, 110,
 		90, 80,
 		75, 50,
 		60, 20,
 		45, 0,
-		15, -20,
-		5, -20,
+		20, -12,
+		5, -10,
 
 	};
-	CreateChain(600, 120, wallRight, 44, 0.4f);
+	CreateChain(600, 130, wallRight, 44, 0.4f);
+
+	int wallLeft[40] = {
+		0, 0,
+		5, 10,
+		0, 20,
+		-30, 40,
+		-50, 70,
+		-60, 120,
+		-60, 170,
+		-55, 200,
+		-35, 230,
+		-32, 240,
+		-35, 245,
+		-55, 235,
+		-80, 200,
+		-90, 170,
+		-95, 120,
+		-85, 70,
+		-75, 40,
+		-60, 20,
+		-30, 0,
+		-15, -5,
+
+
+	};
+	CreateChain(400, 130, wallLeft, 40, 0.4f);
+
+	int LeftStick[20] = {
+		0, 0,
+		3, 1,
+		6, 5,
+		27, 40,
+		27, 45,
+		22, 48,
+		15, 45,
+		-9, 10,
+		-9, 5,
+		-6, 1,
+	};
+	CreateChain(390, 300, LeftStick, 20, 0.4f);
+
+	int RightStick[20] = {
+		0, 0,
+		-3, 1,
+		-6, 5,
+		-27, 40,
+		-27, 45,
+		-22, 48,
+		-15, 45,
+		9, 10,
+		9, 5,
+		6, 1,
+	};
+	CreateChain(600, 300, RightStick, 20, 0.4f);
+
+	int leftPad[22] = {
+		0, 0,
+		0, 45,
+		5, 50,
+		40, 70,
+		45, 70,
+		48, 67,
+		51, 62,
+		20, 0,
+		15, -5,
+		10, -8,
+		5, -5,
+
+	};
+	CreateChain(340, 470, leftPad, 22, 0.7f);
+
+	int rightPad[22] = {
+		0, 0,
+		0, 45,
+		-5, 50,
+		-40, 70,
+		-45, 70,
+		-48, 67,
+		-51, 62,
+		-20, 0,
+		-15, -5,
+		-10, -8,
+		-5, -5,
+
+	};
+	CreateChain(620, 470, rightPad, 22, 0.7f);
+
+	int CentrePad[24] = {
+		0, 0,
+		5, 0,
+		30, 20,
+		35, 25,
+		30, 30,
+		5, 45,
+		0, 45,
+		-5, 45,
+		-30, 30,
+		-35, 25,
+		-30, 20,
+		-5, 0,
+	};
+	CreateChain(SCREEN_WIDTH / 2 - 20, 390, CentrePad, 24, 0.7f);
+
+	int leftArrow[14] = {
+		0, 0,
+		0, 20,
+		5, 25,
+		80, 65,
+		90, 50,
+		7, 5,
+		3, -2,
+
+	};
+	CreateChain(300, 555, leftArrow, 14, 0.3f);
+
+	int rightArrow[14] = {
+		0, 0,
+		0, 20,
+		-5, 25,
+		-80, 65,
+		-90, 50,
+		-7, 5,
+		-3, -2,
+
+	};
+	CreateChain(660, 555, rightArrow, 14, 0.3f);
 	
 
 	return true;
