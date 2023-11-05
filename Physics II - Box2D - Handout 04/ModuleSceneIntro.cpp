@@ -42,6 +42,13 @@ bool ModuleSceneIntro::Start()
 	rightstick = App->textures->Load("pinball/Sprites pinball/Finished/rightstick.png");
 	leftpad = App->textures->Load("pinball/Sprites pinball/Finished/leftpad.png");
 	rightpad = App->textures->Load("pinball/Sprites pinball/Finished/rightpad.png");
+
+	
+	leftarrow = App->textures->Load("pinball/Sprites pinball/Finished/leftarrow.png");
+	rightarrow = App->textures->Load("pinball/Sprites pinball/Finished/rightarrow.png");
+	titlescreen = App->textures->Load("pinball/Sprites pinball/Finished/title.png");
+
+
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 	teleport_fx = App->audio->LoadFx("pinball/teleport_audio.wav");
 
@@ -271,9 +278,24 @@ update_status ModuleSceneIntro::Update()
 	App->physics->rightPad1->GetPosition(x, y);
 	App->renderer->Blit(rightpad, x-51, y - 8);
 
+	App->physics->leftArrow1->GetPosition(x, y);
+	App->renderer->Blit(leftarrow, x, y - 2);
+
+	App->physics->rightArrow1->GetPosition(x, y);
+	App->renderer->Blit(rightarrow, x-90, y - 2);
 	
 
 	return UPDATE_CONTINUE;
+}
+
+update_status ModuleSceneIntro::PostUpdate()
+{
+	score++;
+	
+	App->renderer->Blit(titlescreen, 0, 0);
+
+	return UPDATE_CONTINUE;
+
 }
 
 void ModuleSceneIntro::ShowScore()

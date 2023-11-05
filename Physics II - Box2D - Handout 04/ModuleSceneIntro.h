@@ -14,6 +14,7 @@ public:
 
 	bool Start();
 	update_status Update();
+	update_status PostUpdate();
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 	void ResetSmallGame();
@@ -48,7 +49,6 @@ public:
 	SDL_Texture* rightstick;
 	SDL_Texture* leftpad;
 	SDL_Texture* rightpad;
-	SDL_Texture* centerpad;
 	SDL_Texture* leftarrow;
 	SDL_Texture* rightarrow;
 	SDL_Texture* titlescreen;
