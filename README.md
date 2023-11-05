@@ -2,7 +2,7 @@
 
 By Dídac García, David Lastra, Biel Liñan, Noel Colón
 
-General shape slightly inspier by https://games.htmlgames.com/PinballMaster/
+General shape slightly inspired by https://games.htmlgames.com/PinballMaster/
  
 Link to the Github: https://github.com/D1dii/Pinball-Physics
 
