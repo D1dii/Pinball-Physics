@@ -2,7 +2,7 @@
 
 By Dídac García, David Lastra, Biel Liñan, Noel Colón
 
-There is no original, we made it up 100%!
+General shape slightly inspier by https://games.htmlgames.com/PinballMaster/
  
 Link to the Github: https://github.com/D1dii/Pinball-Physics
 
