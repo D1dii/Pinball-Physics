@@ -16,6 +16,8 @@ public:
 	update_status Update();
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
+	void ResetSmallGame();
+	void ResetWholeGame();
 
 public:
 	p2List<PhysBody*> circles;
@@ -33,4 +35,22 @@ public:
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;
+
+public:
+
+	PhysBody* pinball;
+	PhysBody* Lflipper;
+	PhysBody* Rflipper;
+	PhysBody* pointLflipper;
+	PhysBody* pointRflipper;
+	PhysBody* boxStart;
+	PhysBody* startSensor;
+
+	PhysBody* ballPlayer;
+
+	PhysBody* death;
+
+	int lives = 3;
+	bool startThrow = true;
+	float powerThrow = 0;
 };

@@ -35,25 +35,16 @@ bool ModulePhysics::Start()
 	b2BodyDef bd;
 	ground = world->CreateBody(&bd);
 
-	// 50 points circle
-	CreateCircle(SCREEN_WIDTH / 2 - 20, 300, 30, 1.0f, true);
-
 	// 25 points circle
-	CreateCircle(450, 200, 20, 1.0f, true);
-	
+	bounce25 = CreateCircle(450, 200, 20, 1.0f, true);
+
+	// 50 points circle
+	bounce50 = CreateCircle(SCREEN_WIDTH / 2 - 20, 300, 30, 1.0f, true);
+
 	// 100 points circle
-	CreateCircle(550, 210, 25, 1.0f, true);
+	bounce100 = CreateCircle(550, 210, 25, 1.0f, true);
 
 	//Scenary
-
-	//Contorno
-	int contorno[8] = {
-		0, 0,
-		500, 0,
-		500, 750,
-		0, 750,
-	};
-	CreateChain(255, 10, contorno, 8, 0.4f);
 
 	//Paredes
 	int rampDownLeft[10] = {
@@ -63,7 +54,7 @@ bool ModulePhysics::Start()
 		180, 125,
 		0, 125,
 	};
-	CreateChain(255, 636, rampDownLeft, 10, 0.4f);
+	rampDownLeft1 = CreateChain(255, 636, rampDownLeft, 10, 0.4f);
 
 	int rampDownRight[10] = {
 		180, 0,
@@ -72,7 +63,7 @@ bool ModulePhysics::Start()
 		0, 125,
 		180, 125,
 	};
-	CreateChain(525, 636, rampDownRight, 10, 0.4f);
+	rampDownRight1 = CreateChain(525, 636, rampDownRight, 10, 0.4f);
 
 	int triangleLeft[14] = {
 		0, 0,
@@ -83,7 +74,7 @@ bool ModulePhysics::Start()
 		30, 120,
 		0, 150,
 	};
-	CreateChain(255, 300, triangleLeft, 14, 0.4f);
+	triangleLeft1 = CreateChain(255, 300, triangleLeft, 14, 0.4f);
 
 	int techoCirculo[28] = {
 		0, 0,
@@ -102,7 +93,7 @@ bool ModulePhysics::Start()
 		500, 0,
 
 	};
-	CreateChain(255, 10, techoCirculo, 28, 0.4f);
+	techoCirculo1 = CreateChain(255, 10, techoCirculo, 28, 0.4f);
 
 	int wallRight[44] = {
 		0, 0,
@@ -129,7 +120,7 @@ bool ModulePhysics::Start()
 		5, -10,
 
 	};
-	CreateChain(600, 130, wallRight, 44, 0.4f);
+	wallRight1 = CreateChain(600, 130, wallRight, 44, 0.4f);
 
 	int wallLeft[40] = {
 		0, 0,
@@ -155,7 +146,7 @@ bool ModulePhysics::Start()
 
 
 	};
-	CreateChain(400, 130, wallLeft, 40, 0.4f);
+	wallLeft1 = CreateChain(400, 130, wallLeft, 40, 0.4f);
 
 	int LeftStick[20] = {
 		0, 0,
@@ -169,7 +160,7 @@ bool ModulePhysics::Start()
 		-9, 5,
 		-6, 1,
 	};
-	CreateChain(390, 300, LeftStick, 20, 0.4f);
+	LeftStick1 = CreateChain(390, 300, LeftStick, 20, 0.4f);
 
 	int RightStick[20] = {
 		0, 0,
@@ -183,7 +174,7 @@ bool ModulePhysics::Start()
 		9, 5,
 		6, 1,
 	};
-	CreateChain(600, 300, RightStick, 20, 0.4f);
+	RightStick1 = CreateChain(600, 300, RightStick, 20, 0.4f);
 
 	int leftPad[22] = {
 		0, 0,
@@ -199,7 +190,7 @@ bool ModulePhysics::Start()
 		5, -5,
 
 	};
-	CreateChain(340, 470, leftPad, 22, 0.7f);
+	leftPad1 = CreateChain(340, 470, leftPad, 22, 0.7f);
 
 	int rightPad[22] = {
 		0, 0,
@@ -215,7 +206,7 @@ bool ModulePhysics::Start()
 		-5, -5,
 
 	};
-	CreateChain(620, 470, rightPad, 22, 0.7f);
+	rightPad1 = CreateChain(620, 470, rightPad, 22, 0.7f);
 
 	int CentrePad[24] = {
 		0, 0,
@@ -231,7 +222,7 @@ bool ModulePhysics::Start()
 		-30, 20,
 		-5, 0,
 	};
-	CreateChain(SCREEN_WIDTH / 2 - 20, 390, CentrePad, 24, 0.7f);
+	CentrePad1 = CreateChain(SCREEN_WIDTH / 2 - 20, 390, CentrePad, 24, 0.7f);
 
 	int leftArrow[14] = {
 		0, 0,
@@ -243,7 +234,7 @@ bool ModulePhysics::Start()
 		3, -2,
 
 	};
-	CreateChain(300, 555, leftArrow, 14, 0.3f);
+	leftArrow1 = CreateChain(280, 535, leftArrow, 14, 0.3f);
 
 	int rightArrow[14] = {
 		0, 0,
@@ -255,7 +246,9 @@ bool ModulePhysics::Start()
 		-3, -2,
 
 	};
-	CreateChain(660, 555, rightArrow, 14, 0.3f);
+	rightArrow1 = CreateChain(680, 535, rightArrow, 14, 0.3f);
+
+	
 	
 
 	return true;
@@ -314,10 +307,15 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, float res, bool 
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, bool isStatic)
 {
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	if (isStatic) {
+		body.type = b2_staticBody;
+	}
+	else {
+		body.type = b2_dynamicBody;
+	}
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
@@ -339,7 +337,7 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height, int type)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -359,6 +357,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
+	pbody->type = type;
 	b->SetUserData(pbody);
 	pbody->width = width;
 	pbody->height = height;
@@ -366,7 +365,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, float res)
+PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, float res, bool open_chain)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -383,7 +382,14 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, float 
 		p[i].y = PIXEL_TO_METERS(points[i * 2 + 1]);
 	}
 
-	shape.CreateLoop(p, size / 2);
+	if (open_chain)
+	{
+		shape.CreateChain(p, size / 2);
+	}
+	else
+	{
+		shape.CreateLoop(p, size / 2);
+	}
 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
@@ -395,6 +401,7 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, float 
 
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
+	pbody->open_chain = open_chain;
 	b->SetUserData(pbody);
 	pbody->width = pbody->height = 0;
 
@@ -483,7 +490,6 @@ update_status ModulePhysics::PostUpdate()
 			// TODO 1: If mouse button 1 is pressed ...
 			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			// test if the current body contains mouse position
-				
 				mouse_position = b2Vec2(PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()));
 				if (f->GetShape()->TestPoint(b->GetTransform(), mouse_position) == true) {
 					isInside = true;
@@ -499,9 +505,9 @@ update_status ModulePhysics::PostUpdate()
 					mouse_joint = (b2MouseJoint*)world->CreateJoint(&def);
 					
 				}
-
-
 			}
+
+			
 			
 		}
 	}
@@ -525,6 +531,8 @@ update_status ModulePhysics::PostUpdate()
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP) {
 		world->DestroyJoint(mouse_joint);
 	}
+
+	
 
 	return UPDATE_CONTINUE;
 }
@@ -608,11 +616,13 @@ void ModulePhysics::BeginContact(b2Contact* contact)
 	PhysBody* physA = (PhysBody*)contact->GetFixtureA()->GetBody()->GetUserData();
 	PhysBody* physB = (PhysBody*)contact->GetFixtureB()->GetBody()->GetUserData();
 
-	if(physA && physA->listener != NULL)
-		physA->listener->OnCollision(physA, physB);
+	if (!physA->body->GetFixtureList()->IsSensor() && !physB->body->GetFixtureList()->IsSensor())
+	{
+		if (physA && physA->listener != NULL)
+			physA->listener->OnCollision(physA, physB);
 
-	if(physB && physB->listener != NULL)
-		physB->listener->OnCollision(physB, physA);
+		if (physB && physB->listener != NULL)
+			physB->listener->OnCollision(physB, physA);
+	}
 
-	
 }

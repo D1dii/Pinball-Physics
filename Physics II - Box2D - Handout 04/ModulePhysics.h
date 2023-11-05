@@ -25,7 +25,8 @@ public:
 	int RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& normal_y) const;
 
 public:
-	int width, height;
+	int width, height, type;
+	bool open_chain;
 	b2Body* body;
 	Module* listener;
 };
@@ -43,21 +44,45 @@ public:
 	bool CleanUp();
 
 	PhysBody* CreateCircle(int x, int y, int radius, float res, bool isStatic);
-	PhysBody* CreateRectangle(int x, int y, int width, int height);
-	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
-	PhysBody* CreateChain(int x, int y, int* points, int size, float res);
+	PhysBody* CreateRectangle(int x, int y, int width, int height, bool isStatic);
+	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, int type);
+	PhysBody* CreateChain(int x, int y, int* points, int size, float res, bool open_chain = false);
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
+
+public:
+	PhysBody* bounce25;
+	PhysBody* bounce50;
+	PhysBody* bounce100;
+	PhysBody* rampDownLeft1;
+	PhysBody* rampDownRight1;
+	PhysBody* triangleLeft1;
+	PhysBody* techoCirculo1;
+	PhysBody* wallRight1;
+	PhysBody* wallLeft1;
+	PhysBody* LeftStick1;
+	PhysBody* RightStick1;
+	PhysBody* leftPad1;
+	PhysBody* rightPad1;
+	PhysBody* CentrePad1;
+	PhysBody* leftArrow1;
+	PhysBody* rightArrow1;
+
+	b2World* world;
+
+	
 
 private:
 
 	bool debug;
 	bool isInside;
-	b2World* world;
+	
 	b2MouseJoint* mouse_joint;
 	b2Body* ground;
 	b2Body* body_clicked;
 	b2Vec2 mouse_position;
+
+
 
 };
