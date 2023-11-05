@@ -25,6 +25,8 @@ bool ModuleSceneIntro::Start()
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	
+	
+
 	base1 = App->textures->Load("pinball/Sprites pinball/Finished/skull_pile 1.png");
 	base2 = App->textures->Load("pinball/Sprites pinball/Finished/skull_pile 2.png");
 	ball = App->textures->Load("pinball/Sprites pinball/Finished/skull_ball.png");
@@ -48,10 +50,11 @@ bool ModuleSceneIntro::Start()
 	rightarrow = App->textures->Load("pinball/Sprites pinball/Finished/rightarrow.png");
 	titlescreen = App->textures->Load("pinball/Sprites pinball/Finished/title.png");
 
+	tp = App->textures->Load("pinball/Sprites pinball/Finished/tp.png");
 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 	teleport_fx = App->audio->LoadFx("pinball/teleport_audio.wav");
-
+	App->audio->PlayFx(teleport_fx);
 	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50, 0);
 	sensor->listener = this;
 
@@ -103,7 +106,7 @@ bool ModuleSceneIntro::Start()
 	ballPlayer->listener = this;
 
 	// Teleport Sensor
-	teleport = App->physics->CreateRectangleSensor(640, 420, 30, 30, 2);
+	teleport = App->physics->CreateRectangleSensor(640, 420, 40, 40, 2);
 	teleport->listener = this;
 
 	teleport2 = App->physics->CreateRectangleSensor(300, 470, 40, 40, 2);
@@ -189,31 +192,36 @@ update_status ModuleSceneIntro::Update()
 			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 	}
 
-	//Pallets controller
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		Lflipper->body->ApplyAngularImpulse(-10, true);
-	else
-		Lflipper->body->ApplyAngularImpulse(1, true);
+	if (start)
+	{
 
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		Rflipper->body->ApplyAngularImpulse(10, true);
-	else
-		Rflipper->body->ApplyAngularImpulse(-1, true);
-
-	if (startThrow && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
-		if (powerThrow < 500) {
-			powerThrow += 10;
-		}
-		else {
-			powerThrow = 500;
-		}
 		
-	}
+		//Pallets controller
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+			Lflipper->body->ApplyAngularImpulse(-10, true);
+		else
+			Lflipper->body->ApplyAngularImpulse(1, true);
 
-	if (startThrow && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) {
-		ballPlayer->body->ApplyForceToCenter(b2Vec2(0, -powerThrow), true);
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+			Rflipper->body->ApplyAngularImpulse(10, true);
+		else
+			Rflipper->body->ApplyAngularImpulse(-1, true);
+
+		if (startThrow && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
+			if (powerThrow < 500) {
+				powerThrow += 10;
+			}
+			else {
+				powerThrow = 500;
+			}
+
+		}
+
+		if (startThrow && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) {
+			ballPlayer->body->ApplyForceToCenter(b2Vec2(0, -powerThrow), true);
+		}
+		startThrow = false;
 	}
-	startThrow = false;
 
 	ShowScore();
 
@@ -283,20 +291,30 @@ update_status ModuleSceneIntro::Update()
 
 	App->physics->rightArrow1->GetPosition(x, y);
 	App->renderer->Blit(rightarrow, x-90, y - 2);
+
+	teleport->GetPosition(x, y);
+	App->renderer->Blit(tp, x + 20, y + 20);
 	
+	teleport2->GetPosition(x, y);
+	App->renderer->Blit(tp, x + 20, y + 20);
+
+	if (!start)
+	{
+		
+		App->renderer->Blit(titlescreen, 0, 0);
+		if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+		{
+			start = true;
+			App->audio->PlayMusic("pinball/music.wav");
+		}
+
+	}
+
 
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleSceneIntro::PostUpdate()
-{
-	score++;
-	
-	App->renderer->Blit(titlescreen, 0, 0);
 
-	return UPDATE_CONTINUE;
-
-}
 
 void ModuleSceneIntro::ShowScore()
 {
