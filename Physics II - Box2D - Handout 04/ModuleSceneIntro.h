@@ -48,6 +48,10 @@ public:
 	SDL_Texture* rightstick;
 	SDL_Texture* leftpad;
 	SDL_Texture* rightpad;
+	SDL_Texture* centerpad;
+	SDL_Texture* leftarrow;
+	SDL_Texture* rightarrow;
+	SDL_Texture* titlescreen;
 
 	uint bonus_fx;
 	uint teleport_fx;
