@@ -33,6 +33,13 @@ public:
 	SDL_Texture* rick;
 	SDL_Texture* base1;
 	SDL_Texture* base2;
+	SDL_Texture* bone1;
+	SDL_Texture* bone2;
+	SDL_Texture* ball;
+	SDL_Texture* bumper1;
+	SDL_Texture* bumper2;
+	SDL_Texture* bumper3;
+	SDL_Texture* bg;
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;
@@ -46,9 +53,10 @@ public:
 	PhysBody* pointRflipper;
 	PhysBody* boxStart;
 	PhysBody* startSensor;
+	float brush = 0.0f;
 
 	PhysBody* ballPlayer;
-
+	int ballradius;
 	PhysBody* death;
 
 	int lives = 3;

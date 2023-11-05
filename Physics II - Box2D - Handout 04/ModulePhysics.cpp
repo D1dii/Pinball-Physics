@@ -36,13 +36,13 @@ bool ModulePhysics::Start()
 	ground = world->CreateBody(&bd);
 
 	// 25 points circle
-	bounce25 = CreateCircle(450, 200, 20, 1.0f, true);
+	bounce25 = CreateCircle(450, 200, 25, 1.0f, true);
 
 	// 50 points circle
-	bounce50 = CreateCircle(SCREEN_WIDTH / 2 - 20, 300, 30, 1.0f, true);
+	bounce50 = CreateCircle(SCREEN_WIDTH / 2 - 20, 300, 35, 1.0f, true);
 
 	// 100 points circle
-	bounce100 = CreateCircle(550, 210, 25, 1.0f, true);
+	bounce100 = CreateCircle(550, 210, 30, 1.0f, true);
 
 	//Scenary
 

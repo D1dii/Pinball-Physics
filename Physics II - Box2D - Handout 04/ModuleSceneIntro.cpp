@@ -26,6 +26,14 @@ bool ModuleSceneIntro::Start()
 
 	
 	base1 = App->textures->Load("pinball/Sprites pinball/Finished/skull_pile 1.png");
+	base2 = App->textures->Load("pinball/Sprites pinball/Finished/skull_pile 2.png");
+	ball = App->textures->Load("pinball/Sprites pinball/Finished/skull_ball.png");
+	bone1 = App->textures->Load("pinball/Sprites pinball/Finished/bone1.png");
+	bone2 = App->textures->Load("pinball/Sprites pinball/Finished/bone2.png");
+	bumper1 = App->textures->Load("pinball/Sprites pinball/Finished/skull bumper 1.png");
+	bumper2 = App->textures->Load("pinball/Sprites pinball/Finished/skull bumper 2.png");
+	bumper3 = App->textures->Load("pinball/Sprites pinball/Finished/skull bumper 3.png");
+	bg = App->textures->Load("pinball/Sprites pinball/Finished/bg.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
 	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50, 0);
@@ -74,8 +82,13 @@ bool ModuleSceneIntro::Start()
 	App->physics->world->CreateJoint(&second_joint);
 
 	// Create Ball player
-	ballPlayer = App->physics->CreateCircle(720, 600, 12, 0, false);
+	ballradius = 12;
+	ballPlayer = App->physics->CreateCircle(720, 600, ballradius, 0, false);
 	ballPlayer->listener = this;
+<<<<<<< Updated upstream
+=======
+	
+>>>>>>> Stashed changes
 
 
 	ResetWholeGame();
@@ -181,9 +194,48 @@ update_status ModuleSceneIntro::Update()
 		startThrow = false;
 	}
 
+<<<<<<< Updated upstream
 	ShowScore();
+=======
+	
+>>>>>>> Stashed changes
 
-	App->renderer->Blit(base1, 255, 636);
+	int x, y;
+	float a;
+
+
+	App->renderer->Blit(bg, 255, 10);
+
+	Lflipper->GetPosition(x, y);
+	a = Lflipper->GetRotation();
+	App->renderer->Blit(bone1, x, y, NULL, 1.0f, a, 32, 7);
+
+	Rflipper->GetPosition(x, y);
+	a = Rflipper->GetRotation();
+	App->renderer->Blit(bone2, x, y, NULL, 1.0f, a, 45, 7);
+
+	ballPlayer->GetPosition(x, y);
+
+	a = ballPlayer->GetRotation();
+
+	App->renderer->Blit(ball, x, y, NULL, 1.0f, a, ballradius, ballradius);
+
+
+	
+	App->physics->rampDownLeft1->GetPosition(x, y);
+	App->renderer->Blit(base1, x, y);
+
+	App->physics->rampDownRight1->GetPosition(x, y);
+	App->renderer->Blit(base2, x, y);
+
+	App->physics->bounce25->GetPosition(x, y);
+	App->renderer->Blit(bumper1, x, y);
+	
+	App->physics->bounce100->GetPosition(x, y);
+	App->renderer->Blit(bumper2, x, y);
+	App->physics->bounce50->GetPosition(x, y);
+	App->renderer->Blit(bumper3, x, y);
+	
 
 	return UPDATE_CONTINUE;
 }
