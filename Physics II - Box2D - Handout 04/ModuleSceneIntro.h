@@ -39,7 +39,16 @@ public:
 	SDL_Texture* bumper1;
 	SDL_Texture* bumper2;
 	SDL_Texture* bumper3;
+	SDL_Texture* techo;
+	SDL_Texture* rightwall;
+	SDL_Texture* leftwall;
+	SDL_Texture* trizq;
 	SDL_Texture* bg;
+	SDL_Texture* leftstick;
+	SDL_Texture* rightstick;
+	SDL_Texture* leftpad;
+	SDL_Texture* rightpad;
+
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;

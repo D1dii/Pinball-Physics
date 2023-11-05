@@ -33,7 +33,15 @@ bool ModuleSceneIntro::Start()
 	bumper1 = App->textures->Load("pinball/Sprites pinball/Finished/skull bumper 1.png");
 	bumper2 = App->textures->Load("pinball/Sprites pinball/Finished/skull bumper 2.png");
 	bumper3 = App->textures->Load("pinball/Sprites pinball/Finished/skull bumper 3.png");
+	rightwall = App->textures->Load("pinball/Sprites pinball/Finished/pder.png");
+	leftwall = App->textures->Load("pinball/Sprites pinball/Finished/pizq.png");
+	trizq = App->textures->Load("pinball/Sprites pinball/Finished/trizq.png");
 	bg = App->textures->Load("pinball/Sprites pinball/Finished/bg.png");
+	techo = App->textures->Load("pinball/Sprites pinball/Finished/techo.png");
+	leftstick = App->textures->Load("pinball/Sprites pinball/Finished/leftstick.png");
+	rightstick = App->textures->Load("pinball/Sprites pinball/Finished/rightstick.png");
+	leftpad = App->textures->Load("pinball/Sprites pinball/Finished/leftpad.png");
+	rightpad = App->textures->Load("pinball/Sprites pinball/Finished/rightpad.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
 	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50, 0);
@@ -229,7 +237,30 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(bumper2, x, y);
 	App->physics->bounce50->GetPosition(x, y);
 	App->renderer->Blit(bumper3, x, y);
+
+	App->physics->techoCirculo1->GetPosition(x, y);
+	App->renderer->Blit(techo, x, y);
 	
+	App->physics->wallRight1->GetPosition(x, y);
+	App->renderer->Blit(rightwall, x, y-12);
+
+	App->physics->wallLeft1->GetPosition(x, y);
+	App->renderer->Blit(leftwall, x-95, y - 5);
+
+	App->physics->triangleLeft1->GetPosition(x, y);
+	App->renderer->Blit(trizq, x , y);
+	
+	App->physics->LeftStick1->GetPosition(x, y);
+	App->renderer->Blit(leftstick, x-9, y);
+
+	App->physics->RightStick1->GetPosition(x, y);
+	App->renderer->Blit(rightstick, x - 27, y);
+
+	App->physics->leftPad1->GetPosition(x, y);
+	App->renderer->Blit(leftpad, x, y-8);
+
+	App->physics->rightPad1->GetPosition(x, y);
+	App->renderer->Blit(rightpad, x-51, y - 8);
 
 	return UPDATE_CONTINUE;
 }
