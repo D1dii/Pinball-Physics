@@ -85,10 +85,7 @@ bool ModuleSceneIntro::Start()
 	ballradius = 12;
 	ballPlayer = App->physics->CreateCircle(720, 600, ballradius, 0, false);
 	ballPlayer->listener = this;
-<<<<<<< Updated upstream
-=======
-	
->>>>>>> Stashed changes
+
 
 
 	ResetWholeGame();
@@ -194,11 +191,8 @@ update_status ModuleSceneIntro::Update()
 		startThrow = false;
 	}
 
-<<<<<<< Updated upstream
 	ShowScore();
-=======
-	
->>>>>>> Stashed changes
+
 
 	int x, y;
 	float a;
