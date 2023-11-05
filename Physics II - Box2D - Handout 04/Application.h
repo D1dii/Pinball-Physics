@@ -36,6 +36,7 @@ public:
 
 	bool Init();
 	update_status Update();
+	void FinishUpdate();
 	bool CleanUp();
 
 private:

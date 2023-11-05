@@ -6,6 +6,7 @@
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
+#include "ModuleWindow.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -75,8 +76,6 @@ bool ModuleSceneIntro::Start()
 	// Create Ball player
 	ballPlayer = App->physics->CreateCircle(720, 600, 12, 0, false);
 	ballPlayer->listener = this;
-
-	
 
 
 	ResetWholeGame();
@@ -182,10 +181,19 @@ update_status ModuleSceneIntro::Update()
 		startThrow = false;
 	}
 
+	ShowScore();
 
 	App->renderer->Blit(base1, 255, 636);
 
 	return UPDATE_CONTINUE;
+}
+
+void ModuleSceneIntro::ShowScore()
+{
+	static char title[256];
+	sprintf_s(title, 256, "Current Score: %d Highscore: %d Lifes: %d", score, highscore, lives);
+
+	App->window->SetTitle(title);
 }
 
 void ModuleSceneIntro::ResetSmallGame()
@@ -204,12 +212,25 @@ void ModuleSceneIntro::ResetWholeGame()
 	lives = 3;
 	startThrow = true;
 	powerThrow = 0;
+	highscore = score;
+	score = 0;
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 
-	//App->audio->PlayFx(bonus_fx);
+	if (bodyB == App->physics->bounce25) {
+		score += 25;
+		App->audio->PlayFx(bonus_fx);
+	}
+	else if (bodyB == App->physics->bounce50) {
+		score += 50;
+		App->audio->PlayFx(bonus_fx);
+	}
+	else if (bodyB == App->physics->bounce100) {
+		score += 100;
+		App->audio->PlayFx(bonus_fx);
+	}
 
 	if (bodyA->body->GetFixtureList()->IsSensor()) // Sensor manage
 	{

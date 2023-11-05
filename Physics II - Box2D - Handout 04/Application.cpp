@@ -8,6 +8,7 @@
 #include "ModulePlayer.h"
 #include "ModulePhysics.h"
 #include "ModuleSceneIntro.h"
+#include "Globals.h"
 
 #include "Application.h"
 
@@ -110,7 +111,14 @@ update_status Application::Update()
 		item = item->next;
 	}
 
+	FinishUpdate();
+
 	return ret;
+}
+
+void Application::FinishUpdate() 
+{
+	
 }
 
 bool Application::CleanUp()

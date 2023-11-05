@@ -18,6 +18,7 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 	void ResetSmallGame();
 	void ResetWholeGame();
+	void ShowScore();
 
 public:
 	p2List<PhysBody*> circles;
@@ -53,4 +54,7 @@ public:
 	int lives = 3;
 	bool startThrow = true;
 	float powerThrow = 0;
+
+	int score = 0;
+	int highscore = 0;
 };
