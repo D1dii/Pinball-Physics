@@ -43,7 +43,7 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	PhysBody* CreateCircle(int x, int y, int radius, float res, bool isStatic);
+	PhysBody* CreateCircle(int x, int y, int radius, float res, bool isStatic, bool isSensor = false, int type = 999);
 	PhysBody* CreateRectangle(int x, int y, int width, int height, bool isStatic);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, int type);
 	PhysBody* CreateChain(int x, int y, int* points, int size, float res, bool open_chain = false);
@@ -65,7 +65,6 @@ public:
 	PhysBody* RightStick1;
 	PhysBody* leftPad1;
 	PhysBody* rightPad1;
-	PhysBody* CentrePad1;
 	PhysBody* leftArrow1;
 	PhysBody* rightArrow1;
 

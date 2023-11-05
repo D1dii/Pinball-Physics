@@ -5,6 +5,7 @@
 #include "ModulePhysics.h"
 #include "p2Point.h"
 #include "math.h"
+#include "ModuleSceneIntro.h"
 
 #ifdef _DEBUG
 #pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
@@ -16,7 +17,7 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 {
 	world = NULL;
 	mouse_joint = NULL;
-	debug = true;
+	debug = false;
 }
 
 // Destructor
@@ -208,22 +209,6 @@ bool ModulePhysics::Start()
 	};
 	rightPad1 = CreateChain(620, 470, rightPad, 22, 0.7f);
 
-	int CentrePad[24] = {
-		0, 0,
-		5, 0,
-		30, 20,
-		35, 25,
-		30, 30,
-		5, 45,
-		0, 45,
-		-5, 45,
-		-30, 30,
-		-35, 25,
-		-30, 20,
-		-5, 0,
-	};
-	CentrePad1 = CreateChain(SCREEN_WIDTH / 2 - 20, 390, CentrePad, 24, 0.7f);
-
 	int leftArrow[14] = {
 		0, 0,
 		0, 20,
@@ -273,7 +258,7 @@ update_status ModulePhysics::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, float res, bool isStatic)
+PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, float res, bool isStatic, bool isSensor, int type)
 {
 	b2BodyDef body;
 	if (isStatic == true) {
@@ -293,16 +278,15 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, float res, bool 
 	fixture.shape = &shape;
 	fixture.density = 1.0f;
 	fixture.restitution = res;
+	fixture.isSensor = isSensor;
 	
-
 	b->CreateFixture(&fixture);
 
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
 	b->SetUserData(pbody);
 	pbody->width = pbody->height = radius;
-
-	//b->ApplyLinearImpulse()
+	pbody->type = type;
 
 	return pbody;
 }
@@ -492,6 +476,7 @@ update_status ModulePhysics::PostUpdate()
 			// test if the current body contains mouse position
 				mouse_position = b2Vec2(PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()));
 				if (f->GetShape()->TestPoint(b->GetTransform(), mouse_position) == true) {
+
 					isInside = true;
 					body_clicked = b;
 
@@ -506,8 +491,6 @@ update_status ModulePhysics::PostUpdate()
 					
 				}
 			}
-
-			
 			
 		}
 	}
@@ -528,10 +511,25 @@ update_status ModulePhysics::PostUpdate()
 	}
 
 	// TODO 4: If the player releases the mouse button, destroy the joint
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP) {
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && mouse_joint != NULL) {
 		world->DestroyJoint(mouse_joint);
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+		App->scene_intro->ballPlayer->body->ApplyForceToCenter(b2Vec2(0, -5), true);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+		App->scene_intro->ballPlayer->body->ApplyForceToCenter(b2Vec2(0, 5), true);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		App->scene_intro->ballPlayer->body->ApplyForceToCenter(b2Vec2(-5, 0), true);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		App->scene_intro->ballPlayer->body->ApplyForceToCenter(b2Vec2(5, 0), true);
+	}
 	
 
 	return UPDATE_CONTINUE;

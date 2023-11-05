@@ -50,6 +50,7 @@ public:
 	SDL_Texture* rightpad;
 
 	uint bonus_fx;
+	uint teleport_fx;
 	p2Point<int> ray;
 	bool ray_on;
 
@@ -65,12 +66,16 @@ public:
 	float brush = 0.0f;
 
 	PhysBody* ballPlayer;
-	int ballradius;
-	PhysBody* death;
 
+	PhysBody* teleport;
+	PhysBody* teleport2;
+	PhysBody* restLifes;
+
+	int ballradius;
 	int lives = 3;
 	bool startThrow = true;
 	float powerThrow = 0;
+	bool restLife = false;
 
 	int score = 0;
 	int highscore = 0;

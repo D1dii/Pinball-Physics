@@ -111,8 +111,6 @@ update_status Application::Update()
 		item = item->next;
 	}
 
-	FinishUpdate();
-
 	return ret;
 }
 

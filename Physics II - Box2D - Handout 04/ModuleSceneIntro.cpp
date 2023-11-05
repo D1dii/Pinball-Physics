@@ -43,6 +43,7 @@ bool ModuleSceneIntro::Start()
 	leftpad = App->textures->Load("pinball/Sprites pinball/Finished/leftpad.png");
 	rightpad = App->textures->Load("pinball/Sprites pinball/Finished/rightpad.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
+	teleport_fx = App->audio->LoadFx("pinball/teleport_audio.wav");
 
 	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50, 0);
 	sensor->listener = this;
@@ -94,7 +95,15 @@ bool ModuleSceneIntro::Start()
 	ballPlayer = App->physics->CreateCircle(720, 600, ballradius, 0, false);
 	ballPlayer->listener = this;
 
+	// Teleport Sensor
+	teleport = App->physics->CreateRectangleSensor(640, 420, 30, 30, 2);
+	teleport->listener = this;
 
+	teleport2 = App->physics->CreateRectangleSensor(300, 470, 40, 40, 2);
+	teleport2->listener = this;
+
+	// Rest Life Sensor
+	restLifes = App->physics->CreateRectangleSensor(690, 150, 50, 50, 3);
 
 	ResetWholeGame();
 
@@ -196,8 +205,8 @@ update_status ModuleSceneIntro::Update()
 
 	if (startThrow && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) {
 		ballPlayer->body->ApplyForceToCenter(b2Vec2(0, -powerThrow), true);
-		startThrow = false;
 	}
+	startThrow = false;
 
 	ShowScore();
 
@@ -262,6 +271,8 @@ update_status ModuleSceneIntro::Update()
 	App->physics->rightPad1->GetPosition(x, y);
 	App->renderer->Blit(rightpad, x-51, y - 8);
 
+	
+
 	return UPDATE_CONTINUE;
 }
 
@@ -275,11 +286,13 @@ void ModuleSceneIntro::ShowScore()
 
 void ModuleSceneIntro::ResetSmallGame()
 {
-	ballPlayer->body->SetTransform(b2Vec2(PIXEL_TO_METERS(720), PIXEL_TO_METERS(600)), 0);
-	ballPlayer->body->SetLinearVelocity(b2Vec2(0, 0));
-	lives--;
+	if (restLife == true) {
+		ballPlayer->body->SetTransform(b2Vec2(PIXEL_TO_METERS(720), PIXEL_TO_METERS(617)), 0);
+		ballPlayer->body->SetLinearVelocity(b2Vec2(0, 0));
+		lives--;
+	}
 	startThrow = true;
-	powerThrow = 0;
+	restLife = false;
 }
 
 void ModuleSceneIntro::ResetWholeGame()
@@ -314,6 +327,8 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		if (bodyA->type == 0) // Death Sensor
 		{
 			if (lives != 0) {
+				restLife = true;
+				powerThrow = 0;
 				ResetSmallGame();
 			}
 			else {
@@ -323,7 +338,19 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		}
 		else if (bodyA->type == 1) // Start Position Sensor
 		{
-			startThrow = true;
+			ResetSmallGame();
+		}
+		else if (bodyA->type == 2) // Teleport Sensor
+		{
+			ballPlayer->body->SetTransform(b2Vec2(PIXEL_TO_METERS(500), PIXEL_TO_METERS(100)), 0);
+			lives++;
+			score += 1000;
+			App->audio->PlayFx(teleport_fx);
+		}
+		else if (bodyA->type == 3) // Rest Life Sensor
+		{
+			restLife = true;
+			powerThrow = 0;
 		}
 	}
 }
